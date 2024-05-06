@@ -1,4 +1,4 @@
-Access link and use in your own Rust projects!!
+A multi-purpose, generic linked list in Rust.
 
 Crates.io:  https://crates.io/crates/dgunther2001-linked_list
 
