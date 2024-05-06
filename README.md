@@ -1,3 +1,5 @@
 Access link and use in your own Rust projects!!
 
-https://crates.io/crates/dgunther2001-linked_list
+Crates.io:  https://crates.io/crates/dgunther2001-linked_list
+
+Github:     https://github.com/dgunther2001/Rust_Linked_List
