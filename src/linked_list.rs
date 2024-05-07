@@ -57,20 +57,11 @@ where T: Debug + Clone {
     }
 
     /*
-        Objective => clear the LinkedList
-        Input(s) => (1 -> &mut self) a mutable reference to a LinkedList {IMPLICIT}
-        Output => None
-     */
-    pub fn clear(&mut self) {
-        self.head = None; // sets the head to none freeing memory because there is no longer a reference to any of it
-        self.length = 0; // sets the length to 0
-    }
-
-    /*
         Objective => append to the front of a LinkedList and push everything down 1 index
         Input(s) => (1 -> &mut self) a mutable reference to a LinkedList {IMPLICIT}; (2: element -> T) a literal of type T
         Output => None 
      */
+
     pub fn append_front(&mut self, element: T) {
         // AQUIRE FULL OWNERSHIP OF THE OLD HEAD
         //let old_head = std::mem::replace(&mut self.head, None); // SETS THE OLD HEAD TO NONE BUT STORES IT IN A MEMORY SAFE WAY
@@ -163,21 +154,6 @@ where T: Debug + Clone {
         })
     }
 
-    /* UNNESECARY => TESTING PURPOSES ONLY!!!
-    pub fn static_delete_back(mut node : &mut Option<Box<ListNode<T>>>) {
-        while let Some(n) = node.take() {
-            println!("{:?}",node);
-            if n.next.is_some() {
-                let n = node.get_or_insert(n);
-                println!("{:?}",n);
-                node = &mut n.next;
-            } else {
-                *node = None;
-            }
-        }             
-    }
-    */
-
     /*
         Objective => to delete the last element in the list
         Input(s) => (1 -> &mut self)  a mutable reference to a LinkedList {IMPLICIT}
@@ -210,7 +186,7 @@ where T: Debug + Clone {
         }
     
         let mut current_node = &mut self.head; // sets a mutable variable called current_node to be a mutable reference to the head of the list
-        let mut current_index = 0; // sets the current index to 0, allowing us to pick the right thing to deleter
+        let mut current_index = 0; // sets the current index to 0, allowing us to pick the right thing to delete
 
         while let Some(node) = current_node { // node is the node prior to the one we intend to delete
             if current_index == index - 1 { // if we are at the node before the one we want to delete...
@@ -257,23 +233,26 @@ where T: Debug + Clone {
     }
 
     /*
-        Objective => get the length of the list
+        Objective => get a reference to the value stored at the tail of the list
         Input(s) => (1 -> &self)  a reference to a LinkedList {IMPLICIT}
-        Output => LinkedList length as a u32
+        Output => None if the tail is None, or a reference to the value stored at tail
      */
-    pub fn get_length(&self) -> u32 {
-        self.length // quite literally just returns the value stored at length...
-    }
+    pub fn get_tail_ref(&self) -> Option<&T> {
+        match self.get_length() { // matches the length of the list
+            0 => None, // if its empty, there is no tail
+            _ => self.get_at_index(self.get_length() - 1), // if it's non empty, get a reference to an element at the last index
+        }
+    } 
 
     /*
-        Objectives => check if the list is empty
+        Objective => get a mutable reference to the value stored at the tail of the list
         Input(s) => (1 -> &self)  a reference to a LinkedList {IMPLICIT}
-        Output => a boolean value of whether the list does or does't have a length of 0
+        Output => None if the tail is None, or a mutable reference to the value stored at tail
      */
-    pub fn is_empty(&self) -> bool {
-        match self.length { // pattern matches based on the length of the list
-            0 => true, // if the length is 0, return true
-            _ => false // if it's anything else, return false
+    pub fn get_tail_ref_mut(&mut self) -> Option<&mut T> {
+        match self.get_length() { // matches based on the length of the list
+            0 => None, // if the list is empty, return None
+            _ => self.get_mutable_ref_at_index(self.get_length() - 1), // otherwise return the tail of the list as a mutable reference
         }
     }
 
@@ -311,6 +290,37 @@ where T: Debug + Clone {
                 current_index += 1; // increment the iterator
             }
         } None // if we "run out of list" return None
+    }
+
+    /*
+        Objective => get the length of the list
+        Input(s) => (1 -> &self)  a reference to a LinkedList {IMPLICIT}
+        Output => LinkedList length as a u32
+     */
+    pub fn get_length(&self) -> u32 {
+        self.length // quite literally just returns the value stored at length...
+    }
+
+    /*
+        Objectives => check if the list is empty
+        Input(s) => (1 -> &self)  a reference to a LinkedList {IMPLICIT}
+        Output => a boolean value of whether the list does or does't have a length of 0
+     */
+    pub fn is_empty(&self) -> bool {
+        match self.length { // pattern matches based on the length of the list
+            0 => true, // if the length is 0, return true
+            _ => false // if it's anything else, return false
+        }
+    }
+
+    /*
+        Objective => clear the LinkedList
+        Input(s) => (1 -> &mut self) a mutable reference to a LinkedList {IMPLICIT}
+        Output => None
+     */
+    pub fn clear(&mut self) {
+        self.head = None; // sets the head to none freeing memory because there is no longer a reference to any of it
+        self.length = 0; // sets the length to 0
     }
 
     /*
