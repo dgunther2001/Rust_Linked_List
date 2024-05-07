@@ -5,7 +5,20 @@ on:
       - '*'
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+    - name: Run Tests
+      run: cargo test
+
   build:
+    needs: test
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
@@ -17,8 +30,6 @@ jobs:
       with:
         toolchain: stable
         override: true
-    - name: Run Tests
-      run: cargo test
     - name: Build
       run: cargo build --release
     - name: Upload Artifact
