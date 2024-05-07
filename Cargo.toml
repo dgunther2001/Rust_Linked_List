@@ -1,6 +1,6 @@
 [package]
 name = "dgunther2001-linked_list"
-version = "1.0.7"
+version = "1.0.8"
 authors =  ["Daniel Gunther <danielgunther2001@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
