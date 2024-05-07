@@ -17,6 +17,8 @@ jobs:
       with:
         toolchain: stable
         override: true
+    - name: Run Tests
+      run: cargo test
     - name: Build
       run: cargo build --release
     - name: Upload Artifact
